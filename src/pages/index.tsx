@@ -1,22 +1,29 @@
 import { Fragment, ReactElement, useState } from 'react'
 import RootLayout from '@/layouts/root-layout';
 import MainLayout from '@/layouts/main-layout';
-import { Button, Card, Input } from '@nextui-org/react';
+import { Button, Card, Input, Table, TableHeader, TableColumn, TableBody, TableCell, TableRow } from '@nextui-org/react';
 import { useForm } from 'react-hook-form'
+import { Person, PersonDb } from '@/types/person'
+import { db } from "@/db/database.config";
+import { useLiveQuery } from "dexie-react-hooks";
 
 type Props = {}
 
 const Home = (props: Props) => {
-  type formProps = {
-    email: string,
-    fname: string,
-    lname: string
+  const form = useForm<Person>();
+  const onSubmit = async (req: Person) => {
+    try {
+      const id = await db.persons.add(req);
+      console.info(`new Person ${id}`);
+    } catch (error) {
+      console.error(`Failed to add : ${error}`);
+    }
   }
-  const form = useForm<formProps>();
 
-  const onSubmit = async (req: formProps) => {
-    console.log(req);
-  }
+  const listPerson = useLiveQuery(
+    () => db.persons.toArray(),
+    []
+  ) || [];
 
   return (
     <Fragment>
@@ -35,6 +42,25 @@ const Home = (props: Props) => {
           </form>
         </Card>
       </div>
+      <Table
+        aria-label="Example static collection table"
+        selectionMode="single"
+      >
+        <TableHeader>
+          <TableColumn>FNAME</TableColumn>
+          <TableColumn>LNAME</TableColumn>
+          <TableColumn>EMAIL</TableColumn>
+        </TableHeader>
+        <TableBody items={listPerson}>
+          {(item) => (
+            <TableRow key={item.id}>
+              <TableCell>{item.fname}</TableCell>
+              <TableCell>{item.lname}</TableCell>
+              <TableCell>{item.email}</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </Fragment >
   )
 }
