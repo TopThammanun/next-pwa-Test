@@ -1,4 +1,5 @@
 export type Person = {
+  id?: number;
   email: string;
   fname: string;
   lname: string;
@@ -9,4 +10,5 @@ export type PersonDb = {
   email: string;
   fname: string;
   lname: string;
+  status: string;
 };

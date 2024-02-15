@@ -6,7 +6,7 @@ export class DB extends Dexie {
   constructor() {
     super("database");
     this.version(1).stores({
-      persons: "++id, email, fname, lname",
+      persons: "++id, email, fname, lname, status",
     });
   }
 }

@@ -4,7 +4,7 @@ import $ from "jquery";
 import { apiBaseType } from "./apiBaseType";
 
 const param = $.param;
-const defaultURL = "https://randomuser.me";
+const defaultURL = process.env.NEXT_PUBLIC_SERVICE;
 
 export class ServerError extends Error {
   status: number;
@@ -64,19 +64,19 @@ const apiBase = {
     return res?.data;
   },
 
-  async post(req: { data?: any } & apiBaseType) {
+  async post(req: { data: any } & apiBaseType) {
     handleURL(req);
     const res = await axiosBase.post(encodeURI(req), req.data, req.config);
     return res?.data;
   },
 
-  async put(req: { data?: any } & apiBaseType) {
+  async put(req: { data: any } & apiBaseType) {
     handleURL(req);
     const res = await axiosBase.put(encodeURI(req), req.data, req.config);
     return res?.data;
   },
 
-  async patch(req: { data?: any } & apiBaseType) {
+  async patch(req: { data: any } & apiBaseType) {
     handleURL(req);
     const res = await axiosBase.patch(encodeURI(req), req.data, req.config);
     return res?.data;

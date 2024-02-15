@@ -3,7 +3,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
-  reloadOnOnline: true,
+  reloadOnOnline: false,
   disable: false,
   workboxOptions: {
     disableDevLogs: true,
