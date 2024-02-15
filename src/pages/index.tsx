@@ -124,13 +124,15 @@ const Home = (props: Props) => {
     }
     const updateStatusForAllPersons = async () => {
       for (const element of listPerson) {
-        await updateStatus(element);
+        if (element.status === 'offline' || element.status === 'waiting') {
+          await updateStatus(element);
+        }
       }
     };
     if (status) {
       updateStatusForAllPersons();
     }
-  }, [status]);
+  }, [status, listPerson]);
 
   console.log("personRealDbList", personRealDbList);
 
