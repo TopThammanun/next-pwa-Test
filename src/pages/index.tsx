@@ -111,7 +111,6 @@ const Home = (props: Props) => {
           lname: element.lname,
           status: 'waiting'
         });
-        await new Promise(resolve => setTimeout(resolve, 3000));
         const res = await testPersonAPI.createData({
           data: {
             email: element.email,
