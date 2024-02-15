@@ -118,8 +118,17 @@ const Home = (props: Props) => {
             lname: element.lname,
           }
         })
-        await deleteStudent(element.id)
-        if (res) getData();
+        if (res) {
+          await db.persons.put({
+            id: element.id,
+            email: element.email,
+            fname: element.fname,
+            lname: element.lname,
+            status: 'waiting'
+          });
+          await getData();
+          await deleteStudent(element.id)
+        }
       };
     }
     const updateStatusForAllPersons = async () => {
@@ -133,8 +142,6 @@ const Home = (props: Props) => {
       updateStatusForAllPersons();
     }
   }, [status, listPerson]);
-
-  console.log("personRealDbList", personRealDbList);
 
   return (
     <Fragment>
