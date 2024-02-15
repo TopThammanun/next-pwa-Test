@@ -111,37 +111,30 @@ const Home = (props: Props) => {
           lname: element.lname,
           status: 'waiting'
         });
-        const res = await testPersonAPI.createData({
-          data: {
-            email: element.email,
-            fname: element.fname,
-            lname: element.lname,
-          }
-        })
-        if (res) {
-          await db.persons.put({
-            id: element.id,
-            email: element.email,
-            fname: element.fname,
-            lname: element.lname,
-            status: 'waiting'
-          });
-          await getData();
-          await deleteStudent(element.id)
-        }
       };
     }
     const updateStatusForAllPersons = async () => {
       for (const element of listPerson) {
-        if (element.status === 'offline' || element.status === 'waiting') {
+        if (element.status === 'offline') {
           await updateStatus(element);
+          const res = await testPersonAPI.createData({
+            data: {
+              email: element.email,
+              fname: element.fname,
+              lname: element.lname,
+            }
+          })
+          if (res) {
+            await deleteStudent(element.id)
+            await getData();
+          }
         }
       }
     };
     if (status) {
       updateStatusForAllPersons();
     }
-  }, [status, listPerson]);
+  }, [status]);
 
   return (
     <Fragment>
