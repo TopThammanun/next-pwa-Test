@@ -13,6 +13,7 @@ type Props = {}
 
 const Home = (props: Props) => {
   const [status, setStatus] = useState(navigator.onLine)
+  const [statusDataInIndex, setStatusDataInIndex] = useState<boolean>(false)
   const [personRealDbList, setPersonRealDbList] = useState<Person[]>([])
   const form = useForm<PersonDb>({
     defaultValues: {
@@ -51,11 +52,6 @@ const Home = (props: Props) => {
     }
     form.reset();
   }
-
-  const listPerson = useLiveQuery(
-    () => db.persons.toArray(),
-    []
-  ) || [];
 
   const updateStudent = (item: PersonDb) => {
     try {
@@ -101,6 +97,17 @@ const Home = (props: Props) => {
     };
   }, []);
 
+  const listPerson = useLiveQuery(
+    () => db.persons.toArray(),
+    []
+  ) || [];
+
+  useEffect(() => {
+    if (listPerson.length > 0) {
+      setStatusDataInIndex(true)
+    }
+  }, [listPerson]);
+
   useEffect(() => {
     const updateStatus = async (element: PersonDb) => {
       if (element.status === 'offline') {
@@ -132,9 +139,10 @@ const Home = (props: Props) => {
       }
     };
     if (status) {
+      console.log("hello", listPerson);
       updateStatusForAllPersons();
     }
-  }, [status]);
+  }, [status, statusDataInIndex]);
 
   return (
     <Fragment>
