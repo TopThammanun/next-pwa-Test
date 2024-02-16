@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment, ReactElement, useState, useCallback, useEffect } from 'react'
 import RootLayout from '@/layouts/root-layout';
 import MainLayout from '@/layouts/main-layout';
@@ -150,6 +151,7 @@ const Home = (props: Props) => {
       console.log("hello", listPerson);
       updateStatusForAllPersons();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, statusDataInIndex]);
 
   return (
