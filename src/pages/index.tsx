@@ -14,6 +14,7 @@ type Props = {}
 const Home = (props: Props) => {
   const [status, setStatus] = useState(navigator.onLine)
   const [statusDataInIndex, setStatusDataInIndex] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [personRealDbList, setPersonRealDbList] = useState<Person[]>([])
   const form = useForm<PersonDb>({
     defaultValues: {
@@ -23,9 +24,16 @@ const Home = (props: Props) => {
     }
   });
   const getData = async () => {
-    const res = await testPersonAPI.getAllData();
-    if (res) {
-      setPersonRealDbList(res);
+    try {
+      setIsLoading(true)
+      const res = await testPersonAPI.getAllData();
+      if (res) {
+        setPersonRealDbList(res);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -226,7 +234,7 @@ const Home = (props: Props) => {
           <TableColumn>LNAME</TableColumn>
           <TableColumn>EMAIL</TableColumn>
         </TableHeader>
-        <TableBody items={personRealDbList}>
+        <TableBody items={personRealDbList} isLoading={isLoading}>
           {(item) => (
             <TableRow key={item?.id}>
               <TableCell>{item?.fname}</TableCell>
